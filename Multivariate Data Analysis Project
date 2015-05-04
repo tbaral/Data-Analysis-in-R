@@ -88,3 +88,59 @@ t<-table(predicted,actual)
 t
 misclass<-sum(t[-which(t==diag(t))])/sum(t)
 misclass #0.06361111
+
+
+#try knn classification
+library(class)
+help(knn)
+train<-sample(dim(dat)[1],size=dim(dat)[1]*.50)
+fit2<-knn(dat[train,],dat[-train,],cl=dat[train,11],k=3,prob=TRUE)
+summary(fit2)
+summary(dat[-train,11])
+attributes(.Last.value)
+
+#check in sample performance
+predicted<-fit2
+actual<-dat[-train,11]
+t<-table(predicted,actual)
+t
+misclass<-sum(t[-which(t==diag(t))])/sum(t)
+misclass #0.001111111
+
+#try different values of k
+fit4<-knn(dat[train,],dat[-train,],cl=dat[train,11],k=4,prob=TRUE)
+predicted<-fit4
+t<-table(predicted,actual)
+t
+misclass<-sum(t[-which(t==diag(t))])/sum(t)
+misclass #0.001666667
+
+#k=10
+fit10<-knn(dat[train,],dat[-train,],cl=dat[train,11],k=10,prob=TRUE)
+predicted<-fit10
+t<-table(predicted,actual)
+t
+misclass<-sum(t[-which(t==diag(t))])/sum(t)
+misclass #0.0008333333
+
+#k=20
+fit20<-knn(dat[train,],dat[-train,],cl=dat[train,11],k=20,prob=TRUE)
+predicted<-fit20
+t<-table(predicted,actual)
+t
+misclass<-sum(t[-which(t==diag(t))])/sum(t)
+misclass #0.0008333333 same as 10
+
+
+#try naive bayes classifier
+library(e1071)
+fit.bayes<-naiveBayes(Class~TSH+T3+TT4+T4U+FTI+Age,data=dat)
+summary(fit.bayes)
+fit.bayes
+pfit.bayes<-predict(fit.bayes,dat)
+predicted<-pfit.bayes
+actual<-dat[,11]
+t<-table(predicted,actual)
+t
+misclass<-sum(t[-which(t==diag(t))])/sum(t)
+misclass #0.05 
