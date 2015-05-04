@@ -71,3 +71,8 @@ names(pfit)
 head(pfit$x[,1])
 plot(pfit$x[,1],pfit$x[,2],col=color2,xlab="LD1 (99.3%)",ylab="LD2 (0.66%)",main="Linear Discriminate Components")
 legend(print(locator(1)),legend=c("Hyperthyroidism","Hypothyroidism","Normal"),col=unique(color2),horiz=TRUE,pch=1)
+
+# evaluate in sample performance
+actual<-dat[,11]
+predicted<-pfit
+table(predicted,actual)
